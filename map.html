@@ -3,10 +3,10 @@
 <head>
     <link rel="stylesheet" href="/ol.css" type="text/css">
     <style>
-        /*#map {*/
-            /*height: 256px;*/
-            /*width: 512px;*/
-        /*}*/
+        #map {
+            height: 256px;
+            width: 512px;
+        }
         .ol-attribution a {
             color: black;
         }
@@ -17,22 +17,49 @@
 <body>
 <h1>My Map</h1>
 <div id="map"></div>
+<div id="info"></div>
+
 <script type="text/javascript">
     var map = new ol.Map({
         target: 'map',
         layers: [
             new ol.layer.Tile({
-                source: new ol.source.BingMaps({
-                    imagerySet: 'Road',
-                    key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3'
+                title: 'Global Imagery',
+                source: new ol.source.TileWMS({
+                    url: 'http://demo.opengeo.org/geoserver/wms',
+                    params: {LAYERS: 'nasa:bluemarble', VERSION: '1.1.1'}
+                })
+            }),
+            new ol.layer.Vector({
+                title: 'Earthquakes',
+                source: new ol.source.Vector({
+                    url: '/data/layers/7day-M2.5.json',
+                    format: new ol.format.GeoJSON()
+                }),
+                style: new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 3,
+                        fill: new ol.style.Fill({color: 'white'})
+                    })
                 })
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([126.97, 37.56]),
-            zoom: 9
-        }),
+            projection: 'EPSG:4326',
+            center: [0, 0],
+            zoom: 0,
+            maxResolution: 0.703125
+        })
     });
+
+    map.on('singleclick', function(e) {
+        var feature = map.forEachFeatureAtPixel(e.pixel, function(feature) {
+            return feature;
+        });
+        var infoElement = document.getElementById('info');
+        infoElement.innerHTML = feature ? feature.get('title') : '';
+    });
+
 </script>
 </body>
 </html>
