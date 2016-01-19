@@ -22,18 +22,16 @@
         target: 'map',
         layers: [
             new ol.layer.Tile({
-                source: new ol.source.OSM()
+                source: new ol.source.BingMaps({
+                    imagerySet: 'Road',
+                    key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3'
+                })
             })
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat([126.97, 37.56]),
             zoom: 9
         }),
-        controls: ol.control.defaults({
-            attributionOptions: {
-                collapsible: false
-            }
-        })
     });
 </script>
 </body>
