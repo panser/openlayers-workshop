@@ -30,16 +30,18 @@
                     params: {LAYERS: 'nasa:bluemarble', VERSION: '1.1.1'}
                 })
             }),
-            new ol.layer.Vector({
+            new ol.layer.Image({
                 title: 'Earthquakes',
-                source: new ol.source.Vector({
-                    url: '/data/layers/7day-M2.5.json',
-                    format: new ol.format.GeoJSON()
-                }),
-                style: new ol.style.Style({
-                    image: new ol.style.Circle({
-                        radius: 3,
-                        fill: new ol.style.Fill({color: 'white'})
+                source: new ol.source.ImageVector({
+                    source: new ol.source.Vector({
+                        url: '/data/layers/7day-M2.5.json',
+                        format: new ol.format.GeoJSON()
+                    }),
+                    style: new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 3,
+                            fill: new ol.style.Fill({color: 'white'})
+                        })
                     })
                 })
             })
