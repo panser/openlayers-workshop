@@ -19,12 +19,25 @@
         url: '/data/layers/7day-M2.5.json',
         format: new ol.format.GeoJSON()
     });
-    var draw = new ol.interaction.Draw({
-        source: source,
-        type: 'Point'
+    var style = new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: [0, 153, 255, 1]
+            }),
+            stroke: new ol.style.Stroke({
+                color: [255, 255, 255, 0.75],
+                width: 1.5
+            })
+        }),
+        zIndex: 100000
+    });
+    var select = new ol.interaction.Select({style: style});
+    var modify = new ol.interaction.Modify({
+        features: select.getFeatures()
     });
     var map = new ol.Map({
-        interactions: ol.interaction.defaults().extend([draw]),
+        interactions: ol.interaction.defaults().extend([select, modify]),
         target: 'map',
         layers: [
             new ol.layer.Tile({
